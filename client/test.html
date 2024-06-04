@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .user-profile {
+            border: 1px solid #ccc;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .user-profile img {
+            border-radius: 50%;
+        }
+        .user-profile h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .user-profile p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="user-profile" id="user-profile">
+    <img id="user-picture" src="" alt="User Picture">
+    <h2 id="user-name"></h2>
+    <p><strong>Email:</strong> <span id="user-email"></span></p>
+    <p><strong>Location:</strong> <span id="user-location"></span></p>
+    <p><strong>Phone:</strong> <span id="user-phone"></span></p>
+    <p><strong>Cell:</strong> <span id="user-cell"></span></p>
+</div>
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: 'https://randomuser.me/api/',
+        dataType: 'json',
+        success: function(data) {
+            const user = data.results[0];
+
+            $('#user-picture').attr('src', user.picture.large);
+            $('#user-name').text(`${user.name.title} ${user.name.first} ${user.name.last}`);
+            $('#user-email').text(user.email);
+            $('#user-location').text(`${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state}, ${user.location.country}`);
+            $('#user-phone').text(user.phone);
+            $('#user-cell').text(user.cell);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
