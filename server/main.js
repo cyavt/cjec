@@ -33,16 +33,16 @@ db.connect(err => {
 // Thiết lập một endpoint để nhận dữ liệu từ ESP32
 app.post('/data', (req, res) => {
     // Lấy dữ liệu từ request body
-    const { temperature, humidity } = req.body;
+    const { huuco, taiche, nilong, chuphanloai } = req.body;
 
     // Kiểm tra dữ liệu
-    if (temperature == null || humidity == null) {
+    if (huuco == null || taiche == null || nilong == null || chuphanloai == null) {
         return res.status(400).send('Dữ liệu không hợp lệ');
     }
 
     // Chèn dữ liệu vào bảng MySQL
-    const query = 'INSERT INTO measurements (temperature, humidity) VALUES (?, ?)';
-    db.query(query, [temperature, humidity], (err, result) => {
+    const query = 'INSERT INTO rac (huuco, taiche, nilong, chuphanloai) VALUES (?, ?, ?, ?)';
+    db.query(query, [huuco, taiche, nilong, chuphanloai], (err, result) => {
         if (err) {
             console.error('Lỗi khi chèn dữ liệu vào MySQL:', err);
             return res.status(500).send('Lỗi server');
@@ -57,7 +57,7 @@ app.get('/data', (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
 
     // Truy vấn dữ liệu từ MySQL, sắp xếp theo timestamp giảm dần và giới hạn số bản ghi
-    const query = 'SELECT * FROM measurements ORDER BY timestamp DESC LIMIT 1';
+    const query = 'SELECT * FROM rac ORDER BY id DESC LIMIT 1';
     db.query(query, [limit], (err, results) => {
         if (err) {
             console.error('Lỗi khi lấy dữ liệu từ MySQL:', err);
